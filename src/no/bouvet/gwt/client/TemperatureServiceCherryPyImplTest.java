@@ -1,7 +1,7 @@
 package no.bouvet.gwt.client;
 
-import no.bouvet.gwt.client.TemperatureServicePyCherryImpl.RequestBuilderFactory;
-import no.bouvet.gwt.client.TemperatureServicePyCherryImpl.UrlEncoder;
+import no.bouvet.gwt.client.TemperatureServiceCherryPyImpl.RequestBuilderFactory;
+import no.bouvet.gwt.client.TemperatureServiceCherryPyImpl.UrlEncoder;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,14 +17,14 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import static org.junit.Assert.*;
 
-public class TemperatureServicePyCherryImplTest {
+public class TemperatureServiceCherryPyImplTest {
     static final double SOME_DEGREE = 123.45;
-    TemperatureServicePyCherryImpl subject;
+    TemperatureServiceCherryPyImpl subject;
     FakeRequestBuilderFactory fakeRequestBuilderFactory;
 
     @Before
     public void setUp() {
-        subject = new TemperatureServicePyCherryImpl("");
+        subject = new TemperatureServiceCherryPyImpl("");
         subject.urlEncoder = new FakeUrlEncoder();
         fakeRequestBuilderFactory = new FakeRequestBuilderFactory();
         subject.requestBuilderFactory = fakeRequestBuilderFactory;
@@ -61,6 +61,8 @@ public class TemperatureServicePyCherryImplTest {
         assertNotNull(callback.lastCaught);
     }
 
+    // reusable library stuff below
+    
     static class FakeAsyncCallback<T> implements AsyncCallback<T> {
         Throwable lastCaught;
         T lastResult;

@@ -15,6 +15,12 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * Testable implementation of the temperature conversion widget.
+ * <p>
+ * Uses the <em>Passive View</em> pattern where the presenter drives the
+ * display. This allows the presenter to be easily tested.
+ */
 public class TestableConversionWidget extends Composite {
     TestableConversionWidget(Presenter presenter) {
         DefaultDisplay display = new DefaultDisplay();

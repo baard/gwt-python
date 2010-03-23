@@ -1,10 +1,13 @@
 import cherrypy
+import os.path
 from cherrypy import expose
+from os import path
 
 class Converter:
-    _cp_config = {'tools.staticdir.on' : True,
-                  'tools.staticdir.dir' : '/home/baard/external/Projects/gwt-sample/gwt-sample/war',
-   }
+    _cp_config = {  
+        'tools.staticdir.on' : True,
+        'tools.staticdir.dir' : path.join(path.dirname(__file__), '..', 'war'),
+    }
 
     @expose
     def fahr_to_celc(self, degrees):

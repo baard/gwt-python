@@ -11,12 +11,15 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.http.client.RequestBuilder.Method;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public class TemperatureServicePyCherryImpl implements TemperatureServiceAsync {
+/**
+ * Adapter for the CherryPy implementation of a temperature conversion service.
+ */
+public class TemperatureServiceCherryPyImpl implements TemperatureServiceAsync {
     final String moduleBase;
     UrlEncoder urlEncoder = new DefaultURLEncoder();
     RequestBuilderFactory requestBuilderFactory = new DefaultRequestBuilderFactory();
 
-    public TemperatureServicePyCherryImpl(String moduleBase) {
+    public TemperatureServiceCherryPyImpl(String moduleBase) {
         this.moduleBase = moduleBase.substring(moduleBase.lastIndexOf('/') + 1);
     }
 
@@ -25,7 +28,7 @@ public class TemperatureServicePyCherryImpl implements TemperatureServiceAsync {
         String url = urlEncoder.encode(moduleBase + "/fahr_to_celc?degrees=" + degrees);
         RequestBuilder rb = requestBuilderFactory.create(RequestBuilder.GET, url);
         try {
-            rb.sendRequest(url, new RequestCallback() {
+            rb.sendRequest(null, new RequestCallback() {
                 @Override
                 public void onResponseReceived(Request request, Response response) {
                     double result = Double.parseDouble(response.getText());
@@ -42,10 +45,18 @@ public class TemperatureServicePyCherryImpl implements TemperatureServiceAsync {
         }
     }
 
+    /**
+     * Creates {@link RequestBuilder}s.
+     * <p>
+     * Convenient when test needs to hook into this creation.
+     */
     interface RequestBuilderFactory {
         RequestBuilder create(RequestBuilder.Method method, String url);
     }
 
+    /**
+     * Default non-testable implementation.
+     */
     static class DefaultRequestBuilderFactory implements RequestBuilderFactory {
         @Override
         public RequestBuilder create(Method method, String url) {
@@ -54,10 +65,16 @@ public class TemperatureServicePyCherryImpl implements TemperatureServiceAsync {
 
     }
 
+    /**
+     * Used to encode URLs.
+     */
     interface UrlEncoder {
         String encode(String url);
     }
 
+    /**
+     * Default non-testable implementation.
+     */
     static class DefaultURLEncoder implements UrlEncoder {
         @Override
         public String encode(String url) {

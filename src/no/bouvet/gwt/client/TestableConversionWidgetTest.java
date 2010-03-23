@@ -54,9 +54,6 @@ public class TestableConversionWidgetTest {
         assertEquals("Server failure: some error", fakeDisplay.alert().getText());
     }
     
-    static class FakeClickEvent extends ClickEvent {
-    }
-
     static class FakeDisplay implements TestableConversionWidget.Presenter.Display {
         FakeHasClickHandlers convertButton = new FakeHasClickHandlers();
         FakeHasText input = new FakeHasText();
@@ -83,6 +80,21 @@ public class TestableConversionWidgetTest {
         }
     }
     
+    static class FakeTemperatureServiceAsync implements TemperatureServiceAsync {
+        double lastDegreeParameter;
+        AsyncCallback<Double> lastCallback;
+        @Override
+        public void fahrToCelc(double degrees, AsyncCallback<Double> callback) {
+            this.lastDegreeParameter = degrees;
+            this.lastCallback = callback;
+        }
+    }
+
+    // reusable library stuff below
+    
+    static class FakeClickEvent extends ClickEvent {
+    }
+
     static class FakeHasClickHandlers implements HasClickHandlers {
         HandlerManager handlerManager = new HandlerManager(this);
         @Override
@@ -106,16 +118,6 @@ public class TestableConversionWidgetTest {
         @Override
         public void setText(String text) {
             this.text = text;
-        }
-    }
-    
-    static class FakeTemperatureServiceAsync implements TemperatureServiceAsync {
-        double lastDegreeParameter;
-        AsyncCallback<Double> lastCallback;
-        @Override
-        public void fahrToCelc(double degrees, AsyncCallback<Double> callback) {
-            this.lastDegreeParameter = degrees;
-            this.lastCallback = callback;
         }
     }
 }

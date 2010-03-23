@@ -6,16 +6,23 @@ import no.bouvet.gwt.shared.TemperatureServiceAsync;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 
+/**
+ * The {@link EntryPoint} for the application.
+ */
 public class SampleApp implements EntryPoint {
     public void onModuleLoad() {
-        FlowPanel content = new FlowPanel();
-        TemperatureServiceAsync service = createCherryService();
-        content.add(new ConversionWidget(service));
-        content.add(new TestableConversionWidget(new TestableConversionWidget.Presenter(service)));
-        RootPanel.get().add(content);
+        TemperatureServiceAsync service = createCherryPyService();
+        RootPanel.get().add(createTestableConversionWidget(service));
+    }
+    
+    ConversionWidget createConversionWidget(TemperatureServiceAsync service) {
+        return new ConversionWidget(service);
+    }
+
+    TestableConversionWidget createTestableConversionWidget(TemperatureServiceAsync service) {
+        return new TestableConversionWidget(new TestableConversionWidget.Presenter(service));
     }
 
     TemperatureServiceAsync createGwtRpcService() {
@@ -24,7 +31,7 @@ public class SampleApp implements EntryPoint {
         return remoteService;
     }
 
-    TemperatureServiceAsync createCherryService() {
-        return new TemperatureServicePyCherryImpl(GWT.getModuleBaseURL());
+    TemperatureServiceCherryPyImpl createCherryPyService() {
+        return new TemperatureServiceCherryPyImpl(GWT.getModuleBaseURL());
     }
 }

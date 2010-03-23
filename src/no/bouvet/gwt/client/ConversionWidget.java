@@ -13,6 +13,12 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * Basic implementation of the temperature conversion widget.
+ * <p>
+ * This class is impossible to test with basic JUnit because of
+ * native methods.
+ */
 public class ConversionWidget extends Composite {
     final Button button = new Button("Convert!");
     final TextBox input = new TextBox();
