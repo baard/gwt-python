@@ -1,5 +1,6 @@
 import cherrypy
 import os.path
+import time
 from cherrypy import expose
 from os import path
 
@@ -11,6 +12,7 @@ class Converter:
 
     @expose
     def fahr_to_celc(self, degrees):
+        time.sleep(2)
         temp = (float(degrees) - 32) * 5 / 9
         return "%.01f" % temp
 
