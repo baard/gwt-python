@@ -1,4 +1,4 @@
-package no.bouvet.gwt.server;
+package no.bouvet.gwt.v2.server;
 
 import static org.junit.Assert.*;
 

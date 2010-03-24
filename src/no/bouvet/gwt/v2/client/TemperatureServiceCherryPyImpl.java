@@ -1,6 +1,6 @@
-package no.bouvet.gwt.client;
+package no.bouvet.gwt.v2.client;
 
-import no.bouvet.gwt.shared.TemperatureServiceAsync;
+import no.bouvet.gwt.v2.shared.TemperatureServiceAsync;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -27,19 +27,20 @@ public class TemperatureServiceCherryPyImpl implements TemperatureServiceAsync {
     public void fahrToCelc(double degrees, final AsyncCallback<Double> callback) {
         String url = urlEncoder.encode(moduleBase + "/fahr_to_celc?degrees=" + degrees);
         RequestBuilder rb = requestBuilderFactory.create(RequestBuilder.GET, url);
-        try {
-            rb.sendRequest(null, new RequestCallback() {
-                @Override
-                public void onResponseReceived(Request request, Response response) {
-                    double result = Double.parseDouble(response.getText());
-                    callback.onSuccess(result);
-                }
+        rb.setCallback(new RequestCallback() {
+            @Override
+            public void onResponseReceived(Request request, Response response) {
+                double result = Double.parseDouble(response.getText());
+                callback.onSuccess(result);
+            }
 
-                @Override
-                public void onError(Request request, Throwable exception) {
-                    callback.onFailure(exception);
-                }
-            });
+            @Override
+            public void onError(Request request, Throwable exception) {
+                callback.onFailure(exception);
+            }
+        });
+        try {
+            rb.send();
         } catch (RequestException e) {
             callback.onFailure(e);
         }

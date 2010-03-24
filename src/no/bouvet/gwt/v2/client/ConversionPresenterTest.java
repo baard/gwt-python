@@ -1,7 +1,8 @@
-package no.bouvet.gwt.client;
+package no.bouvet.gwt.v2.client;
 
 import static org.junit.Assert.*;
-import no.bouvet.gwt.shared.TemperatureServiceAsync;
+import no.bouvet.gwt.v2.client.ConversionPresenter.HasVisibility;
+import no.bouvet.gwt.v2.shared.TemperatureServiceAsync;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,15 +16,15 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasText;
 
-public class TestableConversionWidgetTest {
-    TestableConversionWidget.Presenter subject;
+public class ConversionPresenterTest {
+    ConversionPresenter subject;
     FakeTemperatureServiceAsync fakeService;
-    TestableConversionWidget.Presenter.Display fakeDisplay;
+    ConversionPresenter.Display fakeDisplay;
 
     @Before
     public void setUp() {
         fakeService = new FakeTemperatureServiceAsync();
-        subject = new TestableConversionWidget.Presenter(fakeService);
+        subject = new ConversionPresenter(fakeService);
         fakeDisplay = new FakeDisplay();
         subject.bind(fakeDisplay);
     }
@@ -54,11 +55,25 @@ public class TestableConversionWidgetTest {
         assertEquals("Server failure: some error", fakeDisplay.alert().getText());
     }
     
-    static class FakeDisplay implements TestableConversionWidget.Presenter.Display {
+    @Test
+    public void callbackFailureHidesLoadingIndicator() {
+        fakeDisplay.convertButton().fireEvent(new FakeClickEvent());
+        fakeService.lastCallback.onFailure(new Throwable("some error"));
+        assertFalse(fakeDisplay.loading().isVisible());
+    }
+
+    @Test
+    public void convertShowsLoadingIndicator() {
+        fakeDisplay.convertButton().fireEvent(new FakeClickEvent());
+        assertTrue(fakeDisplay.loading().isVisible());
+    }
+
+    static class FakeDisplay implements ConversionPresenter.Display {
         FakeHasClickHandlers convertButton = new FakeHasClickHandlers();
         FakeHasText input = new FakeHasText();
         FakeHasText output = new FakeHasText();
         FakeHasText alert = new FakeHasText();
+        FakeHasVisibility loading = new FakeHasVisibility();
         @Override
         public HasClickHandlers convertButton() {
             return convertButton;
@@ -77,6 +92,11 @@ public class TestableConversionWidgetTest {
         @Override
         public HasText alert() {
             return alert;
+        }
+        
+        @Override
+        public HasVisibility loading() {
+            return loading;
         }
     }
     
@@ -118,6 +138,19 @@ public class TestableConversionWidgetTest {
         @Override
         public void setText(String text) {
             this.text = text;
+        }
+    }
+    
+    static class FakeHasVisibility implements HasVisibility {
+        boolean visible;
+        @Override
+        public boolean isVisible() {
+            return visible;
+        }
+        
+        @Override
+        public void setVisible(boolean visible) {
+            this.visible = visible;
         }
     }
 }

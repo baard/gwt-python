@@ -1,6 +1,6 @@
-package no.bouvet.gwt.server;
+package no.bouvet.gwt.v2.server;
 
-import no.bouvet.gwt.shared.TemperatureService;
+import no.bouvet.gwt.v2.shared.TemperatureService;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 

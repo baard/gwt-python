@@ -1,7 +1,7 @@
-package no.bouvet.gwt.client;
+package no.bouvet.gwt.v2.client;
 
-import no.bouvet.gwt.client.TemperatureServiceCherryPyImpl.RequestBuilderFactory;
-import no.bouvet.gwt.client.TemperatureServiceCherryPyImpl.UrlEncoder;
+import no.bouvet.gwt.v2.client.TemperatureServiceCherryPyImpl.RequestBuilderFactory;
+import no.bouvet.gwt.v2.client.TemperatureServiceCherryPyImpl.UrlEncoder;
 
 import org.junit.Before;
 import org.junit.Test;

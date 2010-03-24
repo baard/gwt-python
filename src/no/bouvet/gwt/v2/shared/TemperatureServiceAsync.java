@@ -1,4 +1,4 @@
-package no.bouvet.gwt.shared;
+package no.bouvet.gwt.v2.shared;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
