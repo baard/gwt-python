@@ -8,27 +8,32 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasText;
 
+/**
+ * Testable implementation of the temperature conversion widget.
+ * <p>
+ * Uses the <em>Passive View</em> pattern where the presenter drives the
+ * display. This allows the presenter to be easily tested.
+ */
 class ConversionPresenter {
-    public interface Display {
-        HasClickHandlers convertButton();
+    interface Display {
+        HasClickHandlers button();
         HasText input();
         HasText output();
-        HasText alert();
-        HasVisibility loading();
     }
     
+    final ConversionMessages messages;
     final TemperatureServiceAsync service;
     Display display;
     
-    public ConversionPresenter(TemperatureServiceAsync service) {
+    public ConversionPresenter(ConversionMessages messages, TemperatureServiceAsync service) {
+        this.messages = messages;
         this.service = service;
     }
 
     void bind(Display display) {
         this.display = display;
         display.input().setText("10.0");
-        display.loading().setVisible(false);
-        display.convertButton().addClickHandler(new ClickHandler() {
+        display.button().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 onButtonClicked();
@@ -37,27 +42,18 @@ class ConversionPresenter {
     }
     
     void onButtonClicked() {
-        double degrees = Double.parseDouble(display.input().getText());
-        display.loading().setVisible(true);
+        final double degrees = Double.parseDouble(display.input().getText());
+        display.output().setText(messages.converting());
         service.fahrToCelc(degrees, new AsyncCallback<Double>() {
             @Override
             public void onSuccess(Double result) {
-                display.output().setText(Double.toString(result) + " celsius");
-                display.loading().setVisible(false);
+                display.output().setText(messages.output(degrees, result));
             }
             
             @Override
             public void onFailure(Throwable caught) {
-                display.alert().setText("Server failure: " + caught.getMessage());
-                display.loading().setVisible(false);
+                display.output().setText(messages.serverFailure(caught.getMessage()));
             }
         });
-    }
-    
-    // reusable library stuff below
-    
-    interface HasVisibility {
-        boolean isVisible();
-        void setVisible(boolean visible);
     }
 }

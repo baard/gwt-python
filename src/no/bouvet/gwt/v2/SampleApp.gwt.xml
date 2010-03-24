@@ -8,4 +8,5 @@
         <exclude name="*Test.java" />
     </source>
     <source path='shared' />
+    <extend-property name="locale" values="no"/>
 </module>

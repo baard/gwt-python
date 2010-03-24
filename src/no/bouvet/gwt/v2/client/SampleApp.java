@@ -18,8 +18,11 @@ public class SampleApp implements EntryPoint {
     }
     
     Widget createConversionWidget(TemperatureServiceAsync service) {
-        ConversionPresenter presenter = new ConversionPresenter(service);
-        ConversionDisplay display = new ConversionDisplay();
+        ConversionMessages messages = GWT.create(ConversionMessages.class);
+        ConversionPresenter presenter = new ConversionPresenter(messages, service);
+        ConversionDisplay.Images images = GWT.create(ConversionDisplay.Images.class);
+        ConversionDisplay.Binder uiBinder = GWT.create(ConversionDisplay.Binder.class);
+        ConversionDisplay display = new ConversionDisplay(messages, images, uiBinder);
         presenter.bind(display);
         return display;
     }

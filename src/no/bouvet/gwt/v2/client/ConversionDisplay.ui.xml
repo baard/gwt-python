@@ -1,0 +1,14 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    xmlns:bouvet="urn:import:no.bouvet.gwt.v2.client">
+    <ui:with type="no.bouvet.gwt.v2.client.ConversionMessages" field="messages" />
+    <ui:with type="no.bouvet.gwt.v2.client.ConversionDisplay.Images" field="images" />
+    
+    <g:HTMLPanel>
+        <g:Label text="{messages.fahrenheits}" />
+        <g:TextBox ui:field="input" />
+        <g:Button ui:field="button" text="{messages.convert}" />
+        <g:Label ui:field="output" />
+    </g:HTMLPanel>
+</ui:UiBinder> 

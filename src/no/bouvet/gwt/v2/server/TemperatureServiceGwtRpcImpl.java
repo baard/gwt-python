@@ -6,6 +6,8 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
  * GWT-RPC implementation of {@link TemperatureService}.
+ * <p>
+ * Runs on the server.
  */
 @SuppressWarnings("serial")
 public class TemperatureServiceGwtRpcImpl extends RemoteServiceServlet implements TemperatureService {
