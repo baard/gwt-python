@@ -26,8 +26,8 @@ class ConversionDisplay extends Composite implements ConversionPresenter.Display
     final Button button = new Button("Convert!");
     final TextBox input = new TextBox();
     final Label output = new Label();
-    final Image loading;
-    final ConversionDisplay.WindowAlertAdapter alert = new WindowAlertAdapter();
+    final PreferredImage loading;
+    final WindowAlertAdapter alert = new WindowAlertAdapter();
     
     interface Images extends ClientBundle {
         ImageResource spinner();
@@ -35,8 +35,7 @@ class ConversionDisplay extends Composite implements ConversionPresenter.Display
 
     ConversionDisplay() {
         Images images = GWT.create(Images.class);
-        loading = new Image(images.spinner());
-        loading.setVisible(false);
+        loading = new PreferredImage(images.spinner());
         initWidget(createWidget());
     }
     
@@ -72,26 +71,14 @@ class ConversionDisplay extends Composite implements ConversionPresenter.Display
     
     @Override
     public HasVisibility loading() {
-        return new ImageAdapter(loading);
+        return loading;
     }
 
     // reusable library stuff below
     
-    static class ImageAdapter implements HasVisibility {
-        final Image image;
-        
-        ImageAdapter(Image image) {
-            this.image = image;
-        }
-
-        @Override
-        public boolean isVisible() {
-            return image.isVisible();
-        }
-        
-        @Override
-        public void setVisible(boolean visible) {
-            image.setVisible(visible);
+    static class PreferredImage extends Image implements HasVisibility {
+        PreferredImage(ImageResource resource) {
+            super(resource);
         }
     }
     

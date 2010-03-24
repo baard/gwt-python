@@ -27,6 +27,7 @@ class ConversionPresenter {
     void bind(Display display) {
         this.display = display;
         display.input().setText("10.0");
+        display.loading().setVisible(false);
         display.convertButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {

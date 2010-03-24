@@ -15,6 +15,10 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 
+/**
+ * Implementation of the temperature conversion widget that is not simple to
+ * test.
+ */
 public class ConversionWidget extends Composite {
     final TextBox input = new TextBox();
     final Button button = new Button("Convert!");

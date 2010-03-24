@@ -14,8 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class SampleApp implements EntryPoint {
     public void onModuleLoad() {
-        TemperatureServiceAsync service = createCherryPyService();
-        RootPanel.get().add(createConversionWidget(service));
+        RootPanel.get().add(createConversionWidget(createCherryPyService()));
     }
     
     Widget createConversionWidget(TemperatureServiceAsync service) {
