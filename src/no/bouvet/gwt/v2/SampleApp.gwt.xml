@@ -4,8 +4,8 @@
     <inherits name='com.google.gwt.user.User' />
     <entry-point class='no.bouvet.gwt.v2.client.SampleApp' />
     <source path='client'>
-        <include name="*.java" />
-        <exclude name="*Test.java" />
+        <include name="**.java" />
+        <exclude name="**Test.java" />
     </source>
     <source path='shared' />
     <extend-property name="locale" values="no"/>

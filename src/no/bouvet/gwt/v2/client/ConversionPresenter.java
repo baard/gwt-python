@@ -1,6 +1,8 @@
 package no.bouvet.gwt.v2.client;
 
-import no.bouvet.gwt.v2.shared.TemperatureServiceAsync;
+import no.bouvet.gwt.v2.shared.ConvertTemperature;
+import no.bouvet.gwt.v2.shared.ConvertTemperatureResult;
+import no.bouvet.gwt.v2.shared.lib.ActionServiceAsync;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -22,10 +24,10 @@ class ConversionPresenter {
     }
     
     final ConversionMessages messages;
-    final TemperatureServiceAsync service;
+    final ActionServiceAsync service;
     Display display;
     
-    public ConversionPresenter(ConversionMessages messages, TemperatureServiceAsync service) {
+    public ConversionPresenter(ConversionMessages messages, ActionServiceAsync service) {
         this.messages = messages;
         this.service = service;
     }
@@ -42,12 +44,12 @@ class ConversionPresenter {
     }
     
     void onButtonClicked() {
-        final double degrees = Double.parseDouble(display.input().getText());
+        double fahrenheits = Double.parseDouble(display.input().getText());
         display.output().setText(messages.converting());
-        service.fahrToCelc(degrees, new AsyncCallback<Double>() {
+        service.execute(new ConvertTemperature(fahrenheits), new AsyncCallback<ConvertTemperatureResult>() {
             @Override
-            public void onSuccess(Double result) {
-                display.output().setText(messages.output(degrees, result));
+            public void onSuccess(ConvertTemperatureResult result) {
+                display.output().setText(messages.output(result.getFahrenheits(), result.getCelsius()));
             }
             
             @Override

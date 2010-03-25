@@ -1,7 +1,9 @@
 package no.bouvet.gwt.v2.client;
 
-import no.bouvet.gwt.v2.client.TemperatureServiceCherryPyImpl.RequestBuilderFactory;
-import no.bouvet.gwt.v2.client.TemperatureServiceCherryPyImpl.UrlEncoder;
+import no.bouvet.gwt.v2.client.CherryPyConvertTemperatureHandler.RequestBuilderFactory;
+import no.bouvet.gwt.v2.client.CherryPyConvertTemperatureHandler.UrlEncoder;
+import no.bouvet.gwt.v2.shared.ConvertTemperature;
+import no.bouvet.gwt.v2.shared.ConvertTemperatureResult;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,37 +19,37 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import static org.junit.Assert.*;
 
-public class TemperatureServiceCherryPyImplTest {
+public class CherryPyConvertTemperatureHandlerTest {
     static final double SOME_DEGREE = 123.45;
-    TemperatureServiceCherryPyImpl subject;
+    CherryPyConvertTemperatureHandler subject;
     FakeRequestBuilderFactory fakeRequestBuilderFactory;
+    FakeAsyncCallback<ConvertTemperatureResult> callback;
 
     @Before
     public void setUp() {
-        subject = new TemperatureServiceCherryPyImpl("");
+        subject = new CherryPyConvertTemperatureHandler("");
         subject.urlEncoder = new FakeUrlEncoder();
         fakeRequestBuilderFactory = new FakeRequestBuilderFactory();
         subject.requestBuilderFactory = fakeRequestBuilderFactory;
+        callback = new FakeAsyncCallback<ConvertTemperatureResult>();
     }
 
     @Test
     public void requestBuilt() throws Exception {
-        subject.fahrToCelc(10.0, new FakeAsyncCallback<Double>());
+        subject.handle(new ConvertTemperature(10.0), callback);
         assertEquals("/fahr_to_celc?degrees=10.0", fakeRequestBuilderFactory.lastUrl);
     }
 
     @Test
     public void responseIsParsed() throws Exception {
-        FakeAsyncCallback<Double> callback = new FakeAsyncCallback<Double>();
-        subject.fahrToCelc(SOME_DEGREE, callback);
+        subject.handle(new ConvertTemperature(SOME_DEGREE), callback);
         fakeRequestBuilderFactory.lastRequestBuilder.getCallback().onResponseReceived(null, new ResponseStub("12.0"));
-        assertEquals(12.0, callback.lastResult, 0.0);
+        assertEquals(12.0, callback.lastResult.getCelsius(), 0.0);
     }
 
     @Test
     public void failure() throws Exception {
-        FakeAsyncCallback<Double> callback = new FakeAsyncCallback<Double>();
-        subject.fahrToCelc(SOME_DEGREE, callback);
+        subject.handle(new ConvertTemperature(SOME_DEGREE), callback);
         Throwable error = new Throwable();
         fakeRequestBuilderFactory.lastRequestBuilder.getCallback().onError(null, error);
         assertEquals(error, callback.lastCaught);
@@ -55,9 +57,8 @@ public class TemperatureServiceCherryPyImplTest {
 
     @Test
     public void requestFailure() throws Exception {
-        FakeAsyncCallback<Double> callback = new FakeAsyncCallback<Double>();
         fakeRequestBuilderFactory.throwRequestException = true;
-        subject.fahrToCelc(SOME_DEGREE, callback);
+        subject.handle(new ConvertTemperature(SOME_DEGREE), callback);
         assertNotNull(callback.lastCaught);
     }
 

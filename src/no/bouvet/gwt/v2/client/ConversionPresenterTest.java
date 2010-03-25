@@ -7,7 +7,11 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
 
-import no.bouvet.gwt.v2.shared.TemperatureServiceAsync;
+import no.bouvet.gwt.v2.shared.ConvertTemperature;
+import no.bouvet.gwt.v2.shared.ConvertTemperatureResult;
+import no.bouvet.gwt.v2.shared.lib.Action;
+import no.bouvet.gwt.v2.shared.lib.ActionServiceAsync;
+import no.bouvet.gwt.v2.shared.lib.Result;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,13 +28,13 @@ import com.google.gwt.user.client.ui.HasText;
 
 public class ConversionPresenterTest {
     ConversionPresenter subject;
-    FakeTemperatureServiceAsync fakeService;
+    FakeActionServiceAsync fakeService;
     ConversionPresenter.Display fakeDisplay;
     ConversionMessages fakeMessages;
 
     @Before
     public void setUp() {
-        fakeService = new FakeTemperatureServiceAsync();
+        fakeService = new FakeActionServiceAsync();
         fakeMessages = createFakeMessages(ConversionMessages.class);
         subject = new ConversionPresenter(fakeMessages, fakeService);
         fakeDisplay = new FakeDisplay();
@@ -46,14 +50,14 @@ public class ConversionPresenterTest {
     public void convertTriggersService() {
         fakeDisplay.input().setText("12.0");
         fakeDisplay.button().fireEvent(new FakeClickEvent());
-        assertEquals(12.0, fakeService.lastDegreeParameter, 0.01);
+        ConvertTemperature lastAction = (ConvertTemperature) fakeService.lastAction;
+        assertEquals(12.0, lastAction.getFahrenheits(), 0.01);
     }
     
     @Test
     public void callbackSuccessUpdatesDisplay() {
-        fakeDisplay.input().setText("12.0");
         fakeDisplay.button().fireEvent(new FakeClickEvent());
-        fakeService.lastCallback.onSuccess(14.0);
+        fakeService.triggerLastCallback(new ConvertTemperatureResult(12.0, 14.0));
         assertEquals(fakeMessages.output(12.0, 14.0), fakeDisplay.output().getText());
     }
 
@@ -91,17 +95,22 @@ public class ConversionPresenterTest {
         }
     }
     
-    static class FakeTemperatureServiceAsync implements TemperatureServiceAsync {
-        double lastDegreeParameter;
-        AsyncCallback<Double> lastCallback;
+    // reusable library stuff below
+
+    static class FakeActionServiceAsync implements ActionServiceAsync {
+        Action<?> lastAction;
+        AsyncCallback<?> lastCallback;
         @Override
-        public void fahrToCelc(double degrees, AsyncCallback<Double> callback) {
-            this.lastDegreeParameter = degrees;
+        public <T extends Result> void execute(Action<T> action, AsyncCallback<T> callback) {
+            this.lastAction = action;
             this.lastCallback = callback;
         }
+        
+        @SuppressWarnings("unchecked")
+        void triggerLastCallback(Result result) {
+            ((AsyncCallback) lastCallback).onSuccess(result);
+        }
     }
-
-    // reusable library stuff below
     
     static class FakeClickEvent extends ClickEvent {
     }
@@ -137,7 +146,7 @@ public class ConversionPresenterTest {
             @Override
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                 // "format" with method and arguments to use in tests
-                return method.getName() + Arrays.asList(args);
+                return method.getName() + Arrays.toString(args);
             }
         });
         return messageClass.cast(proxy);

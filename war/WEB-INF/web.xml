@@ -4,14 +4,14 @@
     "http://java.sun.com/dtd/web-app_2_3.dtd">
 <web-app>
     <servlet>
-        <servlet-name>temperatureService</servlet-name>
+        <servlet-name>actionService</servlet-name>
         <servlet-class>
-            no.bouvet.gwt.v2.server.TemperatureServiceGwtRpcImpl
+            no.bouvet.gwt.v2.server.common.DelegatingActionServiceAsyncServlet
         </servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>temperatureService</servlet-name>
-        <url-pattern>/no.bouvet.gwt.v2.SampleApp/temperatureService
+        <servlet-name>actionService</servlet-name>
+        <url-pattern>/no.bouvet.gwt.v2.SampleApp/actionService
         </url-pattern>
     </servlet-mapping>
 </web-app>

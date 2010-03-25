@@ -9,7 +9,7 @@ interface ConversionMessages extends Messages {
     @DefaultMessage("Convert!")
     String convert();
 
-    @DefaultMessage("{0} Fahrenheits is {0} Celsius")
+    @DefaultMessage("{0} Fahrenheits is {1} Celsius")
     String output(double fahrenheits, double celsius);
     
     @DefaultMessage("Server failure: {0}")

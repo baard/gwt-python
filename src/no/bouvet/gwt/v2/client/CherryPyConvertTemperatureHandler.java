@@ -1,6 +1,8 @@
 package no.bouvet.gwt.v2.client;
 
-import no.bouvet.gwt.v2.shared.TemperatureServiceAsync;
+import no.bouvet.gwt.v2.shared.ConvertTemperature;
+import no.bouvet.gwt.v2.shared.ConvertTemperatureResult;
+import no.bouvet.gwt.v2.shared.lib.ActionHandlerAsync;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -12,26 +14,26 @@ import com.google.gwt.http.client.RequestBuilder.Method;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
- * Adapter for the CherryPy implementation of a temperature conversion service.
+ * Adapter for the CherryPy temperature conversion.
  */
-public class TemperatureServiceCherryPyImpl implements TemperatureServiceAsync {
+public class CherryPyConvertTemperatureHandler implements ActionHandlerAsync<ConvertTemperature, ConvertTemperatureResult> {
     final String moduleBase;
     UrlEncoder urlEncoder = new DefaultURLEncoder();
     RequestBuilderFactory requestBuilderFactory = new DefaultRequestBuilderFactory();
 
-    public TemperatureServiceCherryPyImpl(String moduleBase) {
+    public CherryPyConvertTemperatureHandler(String moduleBase) {
         this.moduleBase = moduleBase.substring(moduleBase.lastIndexOf('/') + 1);
     }
-
+    
     @Override
-    public void fahrToCelc(double degrees, final AsyncCallback<Double> callback) {
-        String url = urlEncoder.encode(moduleBase + "/fahr_to_celc?degrees=" + degrees);
+    public void handle(final ConvertTemperature action, final AsyncCallback<ConvertTemperatureResult> callback) {
+        String url = urlEncoder.encode(moduleBase + "/fahr_to_celc?degrees=" + action.getFahrenheits());
         RequestBuilder rb = requestBuilderFactory.create(RequestBuilder.GET, url);
         rb.setCallback(new RequestCallback() {
             @Override
             public void onResponseReceived(Request request, Response response) {
                 double result = Double.parseDouble(response.getText());
-                callback.onSuccess(result);
+                callback.onSuccess(new ConvertTemperatureResult(action.getFahrenheits(), result));
             }
 
             @Override

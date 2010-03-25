@@ -12,7 +12,7 @@ class Converter:
 
     @expose
     def fahr_to_celc(self, degrees):
-        time.sleep(2)
+        #time.sleep(2)
         temp = (float(degrees) - 32) * 5 / 9
         return "%.01f" % temp
 
