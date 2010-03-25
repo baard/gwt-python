@@ -1,20 +1,20 @@
-package no.bouvet.gwt.v2.shared.lib;
+package no.rehn.gwt.remoting.client.log;
 
-import java.util.HashMap;
+import no.rehn.gwt.remoting.shared.Action;
+import no.rehn.gwt.remoting.shared.ActionServiceAsync;
+import no.rehn.gwt.remoting.shared.Result;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public class DispatchingActionServiceAsync implements ActionServiceAsync {
-    final HashMap<Class<?>, ActionHandlerAsync<?, ?>> handlers = new HashMap<Class<?>, ActionHandlerAsync<?, ?>>();
+//TODO clean up!
+public class LoggingActionServiceAsync implements ActionServiceAsync {
     final HandlerManager eventBus;
-    
-    public DispatchingActionServiceAsync(HandlerManager eventBus) {
-        this.eventBus = eventBus;
-    }
+    final ActionServiceAsync delegate;
 
-    public <T extends Action<?>> void addHandler(Class<T> actionType, ActionHandlerAsync<T, ?> handler) {
-        handlers.put(actionType, handler);
+    public LoggingActionServiceAsync(HandlerManager eventBus, ActionServiceAsync delegate) {
+        this.eventBus = eventBus;
+        this.delegate = delegate;
     }
 
     @Override
@@ -22,7 +22,7 @@ public class DispatchingActionServiceAsync implements ActionServiceAsync {
         eventBus.fireEvent(new ActionStartedEvent(action));
         final ActionEndedEvent actionEndedEvent = new ActionEndedEvent(action);
         actionEndedEvent.recordDispatched();
-        dispatch(action, new AsyncCallback<T>() {
+        delegate.execute(action, new AsyncCallback<T>() {
             @Override
             public void onFailure(Throwable caught) {
                 onCallbackStarted();
@@ -52,15 +52,5 @@ public class DispatchingActionServiceAsync implements ActionServiceAsync {
                 }
             }
         });
-    }
-
-    @SuppressWarnings("unchecked")
-    void dispatch(Action action, AsyncCallback callback) {
-        Class actionType = action.getClass();
-        ActionHandlerAsync handler = handlers.get(actionType);
-        if (handler == null) {
-            throw new IllegalArgumentException("No handler for action: " + actionType);
-        }
-        handler.handle(action, callback);
     }
 }

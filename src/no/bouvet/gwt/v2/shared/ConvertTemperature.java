@@ -1,6 +1,6 @@
 package no.bouvet.gwt.v2.shared;
 
-import no.bouvet.gwt.v2.shared.lib.Action;
+import no.rehn.gwt.remoting.shared.Action;
 
 public class ConvertTemperature implements Action<ConvertTemperatureResult> {
     private double fahrenheits;

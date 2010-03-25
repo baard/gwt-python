@@ -6,7 +6,7 @@
     <servlet>
         <servlet-name>actionService</servlet-name>
         <servlet-class>
-            no.bouvet.gwt.v2.server.common.DelegatingActionServiceAsyncServlet
+            no.bouvet.gwt.v2.server.DelegatingActionServiceAsyncServlet
         </servlet-class>
     </servlet>
     <servlet-mapping>

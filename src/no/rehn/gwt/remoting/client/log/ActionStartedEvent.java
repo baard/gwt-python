@@ -1,4 +1,6 @@
-package no.bouvet.gwt.v2.shared.lib;
+package no.rehn.gwt.remoting.client.log;
+
+import no.rehn.gwt.remoting.shared.Action;
 
 import com.google.gwt.event.shared.GwtEvent;
 

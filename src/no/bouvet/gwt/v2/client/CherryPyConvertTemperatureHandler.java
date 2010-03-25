@@ -2,7 +2,7 @@ package no.bouvet.gwt.v2.client;
 
 import no.bouvet.gwt.v2.shared.ConvertTemperature;
 import no.bouvet.gwt.v2.shared.ConvertTemperatureResult;
-import no.bouvet.gwt.v2.shared.lib.ActionHandlerAsync;
+import no.rehn.gwt.remoting.client.ActionHandlerAsync;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;

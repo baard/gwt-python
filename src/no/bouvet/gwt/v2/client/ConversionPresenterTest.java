@@ -9,9 +9,9 @@ import java.util.Arrays;
 
 import no.bouvet.gwt.v2.shared.ConvertTemperature;
 import no.bouvet.gwt.v2.shared.ConvertTemperatureResult;
-import no.bouvet.gwt.v2.shared.lib.Action;
-import no.bouvet.gwt.v2.shared.lib.ActionServiceAsync;
-import no.bouvet.gwt.v2.shared.lib.Result;
+import no.rehn.gwt.remoting.shared.Action;
+import no.rehn.gwt.remoting.shared.ActionServiceAsync;
+import no.rehn.gwt.remoting.shared.Result;
 
 import org.junit.Before;
 import org.junit.Test;

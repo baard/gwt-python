@@ -1,13 +1,14 @@
 package no.bouvet.gwt.v2.client;
 
-import no.bouvet.gwt.v2.client.lib.ActionLogger;
 import no.bouvet.gwt.v2.shared.ConvertTemperature;
 import no.bouvet.gwt.v2.shared.ConvertTemperatureResult;
-import no.bouvet.gwt.v2.shared.lib.ActionHandlerAsync;
-import no.bouvet.gwt.v2.shared.lib.ActionService;
-import no.bouvet.gwt.v2.shared.lib.ActionServiceAsync;
-import no.bouvet.gwt.v2.shared.lib.DelegatingActionHandler;
-import no.bouvet.gwt.v2.shared.lib.DispatchingActionServiceAsync;
+import no.rehn.gwt.remoting.client.ActionHandlerAsync;
+import no.rehn.gwt.remoting.client.DelegatingActionHandlerAsync;
+import no.rehn.gwt.remoting.client.DispatchingActionServiceAsync;
+import no.rehn.gwt.remoting.client.log.ActionLogger;
+import no.rehn.gwt.remoting.client.log.LoggingActionServiceAsync;
+import no.rehn.gwt.remoting.shared.ActionService;
+import no.rehn.gwt.remoting.shared.ActionServiceAsync;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -21,10 +22,11 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class SampleApp implements EntryPoint {
     public void onModuleLoad() {
-        HandlerManager eventBus = new HandlerManager(null);
-        DispatchingActionServiceAsync service = new DispatchingActionServiceAsync(eventBus);
+        DispatchingActionServiceAsync service = new DispatchingActionServiceAsync();
         service.addHandler(ConvertTemperature.class, createCherryPyService());
-        RootPanel.get().add(createConversionWidget(service));
+        HandlerManager eventBus = new HandlerManager(null);
+        LoggingActionServiceAsync loggingService = new LoggingActionServiceAsync(eventBus, service);
+        RootPanel.get().add(createConversionWidget(loggingService));
         RootPanel.get().add(createActionLogger(eventBus));
     }
 
@@ -45,7 +47,7 @@ public class SampleApp implements EntryPoint {
     ActionHandlerAsync<ConvertTemperature, ConvertTemperatureResult> createGwtRpcService() {
         ActionServiceAsync actionService = GWT.create(ActionService.class);
         ((ServiceDefTarget) actionService).setServiceEntryPoint(GWT.getModuleBaseURL() + "actionService");
-        return new DelegatingActionHandler<ConvertTemperature, ConvertTemperatureResult>(actionService);
+        return new DelegatingActionHandlerAsync<ConvertTemperature, ConvertTemperatureResult>(actionService);
     }
 
     ActionHandlerAsync<ConvertTemperature, ConvertTemperatureResult> createCherryPyService() {

@@ -1,11 +1,10 @@
-package no.bouvet.gwt.v2.server.lib;
+package no.bouvet.gwt.v2.server;
 
-
-import no.bouvet.gwt.v2.server.ConvertTemperatureHandler;
 import no.bouvet.gwt.v2.shared.ConvertTemperature;
-import no.bouvet.gwt.v2.shared.lib.Action;
-import no.bouvet.gwt.v2.shared.lib.ActionService;
-import no.bouvet.gwt.v2.shared.lib.Result;
+import no.rehn.gwt.remoting.server.DispatchingActionService;
+import no.rehn.gwt.remoting.shared.Action;
+import no.rehn.gwt.remoting.shared.ActionService;
+import no.rehn.gwt.remoting.shared.Result;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 

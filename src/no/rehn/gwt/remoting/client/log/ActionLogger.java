@@ -1,9 +1,5 @@
-package no.bouvet.gwt.v2.client.lib;
+package no.rehn.gwt.remoting.client.log;
 
-import no.bouvet.gwt.v2.shared.lib.ActionEndedEvent;
-import no.bouvet.gwt.v2.shared.lib.ActionEndedHandler;
-import no.bouvet.gwt.v2.shared.lib.ActionStartedEvent;
-import no.bouvet.gwt.v2.shared.lib.ActionStartedHandler;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;

@@ -1,4 +1,7 @@
-package no.bouvet.gwt.v2.shared.lib;
+package no.rehn.gwt.remoting.client;
+
+import no.rehn.gwt.remoting.shared.Action;
+import no.rehn.gwt.remoting.shared.Result;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 

@@ -1,4 +1,4 @@
-package no.bouvet.gwt.v2.shared.lib;
+package no.rehn.gwt.remoting.shared;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 
