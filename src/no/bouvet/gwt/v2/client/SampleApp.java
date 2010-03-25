@@ -5,8 +5,8 @@ import no.bouvet.gwt.v2.shared.ConvertTemperatureResult;
 import no.rehn.gwt.remoting.client.ActionHandlerAsync;
 import no.rehn.gwt.remoting.client.DelegatingActionHandlerAsync;
 import no.rehn.gwt.remoting.client.DispatchingActionServiceAsync;
-import no.rehn.gwt.remoting.client.log.ActionLogger;
-import no.rehn.gwt.remoting.client.log.LoggingActionServiceAsync;
+import no.rehn.gwt.remoting.client.monitor.ActionLogger;
+import no.rehn.gwt.remoting.client.monitor.LoggingActionServiceAsync;
 import no.rehn.gwt.remoting.shared.ActionService;
 import no.rehn.gwt.remoting.shared.ActionServiceAsync;
 

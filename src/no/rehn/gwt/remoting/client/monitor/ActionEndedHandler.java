@@ -1,4 +1,4 @@
-package no.rehn.gwt.remoting.client.log;
+package no.rehn.gwt.remoting.client.monitor;
 
 import com.google.gwt.event.shared.EventHandler;
 

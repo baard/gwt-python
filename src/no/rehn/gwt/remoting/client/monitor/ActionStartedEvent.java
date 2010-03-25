@@ -1,4 +1,4 @@
-package no.rehn.gwt.remoting.client.log;
+package no.rehn.gwt.remoting.client.monitor;
 
 import no.rehn.gwt.remoting.shared.Action;
 
